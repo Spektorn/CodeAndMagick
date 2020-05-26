@@ -1,7 +1,7 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
 * Студент: [Злата Филоненко](https://up.htmlacademy.ru/javascript/20/user/497629).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Рожков](https://up.htmlacademy.ru/javascript/20/user/1069033).
 
 ---
 
