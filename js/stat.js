@@ -29,8 +29,8 @@ var getMaxElement = function (arr) {
 };
 
 var getRandomInt = function (min, max) {
-  return Math.floor(Math.random() * (max - min)) + min;
-}
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 window.renderStatistics = function (ctx, players, times) {
   renderCloud(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, 'rgba(0, 0, 0, 0.7)');
