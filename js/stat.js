@@ -1,60 +1,47 @@
 'use strict';
 
-var CLOUD_WIDTH = 420;
-var CLOUD_HEIGHT = 270;
-var CLOUD_X = 100;
-var CLOUD_Y = 10;
-var GAP = 15;
-var CLOUD_GAP = 10;
-var COLUMN_GAP = 50;
-var TEXT_HEIGHT = 16;
-var BAR_WIDTH = 40;
-var BAR_MAX_HEIGHT = 150;
+window.stat = (function () {
+  var renderCloud = function (ctx, x, y, color) {
+    ctx.fillStyle = color;
+    ctx.fillRect(x, y, window.constants.CLOUD_WIDTH, window.constants.CLOUD_HEIGHT);
+  };
 
-var renderCloud = function (ctx, x, y, color) {
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y, CLOUD_WIDTH, CLOUD_HEIGHT);
-};
+  window.renderStatistics = function (ctx, players, times) {
+    renderCloud(ctx, window.constants.CLOUD_X + window.constants.CLOUD_GAP,
+        window.constants.CLOUD_Y + window.constants.CLOUD_GAP, 'rgba(0, 0, 0, 0.7)');
+    renderCloud(ctx, window.constants.CLOUD_X, window.constants.CLOUD_Y, '#FFFFFF');
 
-var getMaxElement = function (arr) {
-  var maxElement = arr[0];
-
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] > maxElement) {
-      maxElement = arr[i];
-    }
-  }
-
-  return maxElement;
-};
-
-var getRandomInt = function (min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
-window.renderStatistics = function (ctx, players, times) {
-  renderCloud(ctx, CLOUD_X + CLOUD_GAP, CLOUD_Y + CLOUD_GAP, 'rgba(0, 0, 0, 0.7)');
-  renderCloud(ctx, CLOUD_X, CLOUD_Y, '#FFFFFF');
-
-  ctx.font = 'PT Mono 16px';
-  ctx.fillStyle = '#000000';
-  ctx.textBaseline = 'hanging';
-  ctx.fillText('Ура вы победили!', CLOUD_X + GAP, CLOUD_Y + GAP);
-  ctx.fillText('Список результатов:', CLOUD_X + GAP, CLOUD_Y + GAP + TEXT_HEIGHT);
-
-  var maxTime = getMaxElement(times);
-
-  for (var i = 0; i < players.length; i++) {
+    ctx.font = 'PT Mono 16px';
     ctx.fillStyle = '#000000';
-    ctx.fillText(players[i], CLOUD_X + GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_Y + CLOUD_HEIGHT - GAP - TEXT_HEIGHT);
-    ctx.fillText(Math.round(times[i]), CLOUD_X + GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_Y + GAP * 2 + TEXT_HEIGHT * 2 + BAR_MAX_HEIGHT - (BAR_MAX_HEIGHT * times[i] / maxTime));
+    ctx.textBaseline = 'hanging';
+    ctx.fillText('Ура вы победили!', window.constants.CLOUD_X + window.constants.GAP,
+        window.constants.CLOUD_Y + window.constants.GAP);
+    ctx.fillText('Список результатов:', window.constants.CLOUD_X + window.constants.GAP,
+        window.constants.CLOUD_Y + window.constants.GAP + window.constants.TEXT_HEIGHT);
 
-    if (players[i] === 'Вы') {
-      ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-    } else {
-      ctx.fillStyle = 'hsl(235, ' + getRandomInt(0, 100) + '%, 50%)';
+    var maxTime = window.utilities.getMaxElement(times);
+
+    for (var i = 0; i < players.length; i++) {
+      ctx.fillStyle = '#000000';
+      ctx.fillText(players[i],
+          window.constants.CLOUD_X + window.constants.GAP + (window.constants.COLUMN_GAP + window.constants.BAR_WIDTH) * i,
+          window.constants.CLOUD_Y + window.constants.CLOUD_HEIGHT - window.constants.GAP - window.constants.TEXT_HEIGHT);
+      ctx.fillText(Math.round(times[i]),
+          window.constants.CLOUD_X + window.constants.GAP + (window.constants.COLUMN_GAP + window.constants.BAR_WIDTH) * i,
+          window.constants.CLOUD_Y + window.constants.GAP * 2 + window.constants.TEXT_HEIGHT * 2 +
+          window.constants.BAR_MAX_HEIGHT - (window.constants.BAR_MAX_HEIGHT * times[i] / maxTime));
+
+      if (players[i] === 'Вы') {
+        ctx.fillStyle = 'rgba(255, 0, 0, 1)';
+      } else {
+        ctx.fillStyle = 'hsl(235, ' + window.utilities.getRandomInt(0, 100) + '%, 50%)';
+      }
+
+      ctx.fillRect(window.constants.CLOUD_X + window.constants.GAP + (window.constants.COLUMN_GAP + window.constants.BAR_WIDTH) * i,
+          window.constants.CLOUD_Y + window.constants.GAP * 2 + window.constants.TEXT_HEIGHT * 3 + window.constants.BAR_MAX_HEIGHT -
+          (window.constants.BAR_MAX_HEIGHT * times[i] / maxTime),
+          window.constants.BAR_WIDTH,
+          window.constants.BAR_MAX_HEIGHT * times[i] / maxTime);
     }
-
-    ctx.fillRect(CLOUD_X + GAP + (COLUMN_GAP + BAR_WIDTH) * i, CLOUD_Y + GAP * 2 + TEXT_HEIGHT * 3 + BAR_MAX_HEIGHT - (BAR_MAX_HEIGHT * times[i] / maxTime), BAR_WIDTH, BAR_MAX_HEIGHT * times[i] / maxTime);
-  }
-};
+  };
+})();
